@@ -126,13 +126,13 @@ def free_form_mask(xp, batchsize, size=(256, 256), maxVertex=20, minLength=50,
     startX = int(random.uniform(0, imageWidth - 1))
     startY = int(random.uniform(0, imageHeight - 1))
     for i in range(numVertex):
-        angle = random.uniform(0, maxAngle)
+        angle = random.uniform(-maxAngle, maxAngle)
         if i % 2 == 0:
             angle = 180 - angle
         length = random.uniform(minLength, maxLength)
         brushWidth = int(random.uniform(minBrushWidth, maxBrushWidth))
-        endX = startX + int(length * np.sin(np.deg2rad(angle)))
-        endY = startY + int(length * np.cos(np.deg2rad(angle)))
+        endX = np.clip(startX + int(length * np.sin(np.deg2rad(angle))), 0, imageWidth)
+        endY = np.clip(startY + int(length * np.cos(np.deg2rad(angle))), 0, imageHeight)
         cv2.line(mask, (startX, startY), (endX, endY), 255, brushWidth)
         startX = endX
         startY = endY

@@ -9,6 +9,7 @@ from dataset import Dataset
 
 from utils import batch_postprocess_images
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config_path', type=str, default='gated_convolution.yml',
@@ -56,8 +57,9 @@ def main():
     # edges = None
     batch_incomplete = batch_pos * (1. - mask[:, :1])
     # inpaint
-    x1, x2, offset_flow = inpaint_model.inpaintnet(
-        batch_incomplete, mask, config)
+    with chainer.using_config("train", False), chainer.using_config("enable_backprop", False):
+        x1, x2, offset_flow = inpaint_model.inpaintnet(batch_incomplete, mask, config)
+
     batch_complete = x2 * mask[:, :1] + batch_incomplete * (1. - mask[:, :1])
     # visualization
     viz_img = [batch_pos, batch_incomplete - mask[:, 1:] + mask[:, :1], batch_complete.data]

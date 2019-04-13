@@ -1,0 +1,39 @@
+# parameters
+MODEL_RESTORE: 'results_gc'  # Model save directory
+EVAL_FOLDER: 'results_gc'  # Directory to save validation image
+
+PRETRAIN_COARSE_NETWORK: False
+COARSE_L1_ALPHA: 1.2
+PADDING: 'SAME'
+
+# training
+GPU_ID: 0    # GPU id
+MAX_ITERS: 100000
+SNAPSHOT_INTERVAL: 1000
+VAL_PSTEPS: 100
+DIS_UPDATE: 3 # discriminator update times per generator update
+
+# data
+IMAGE_FLIST: [
+  'image_list.txt', # for training
+  'image_list.txt', # for validation
+]
+EDGE_FLIST: [
+  'edge_name_list.txt', # for training
+  'edge_name_list.txt', # for validation
+]
+
+IMG_SHAPES: [256, 256, 3]
+FREE_FORM: True # Free form mask is used if True, rectangle mask is used if False
+HEIGHT: 128
+WIDTH: 128
+MAX_DELTA_HEIGHT: 32
+MAX_DELTA_WIDTH: 32
+BATCH_SIZE: 16
+VERTICAL_MARGIN: 0
+HORIZONTAL_MARGIN: 0
+
+# Adam parms
+ALPHA: 0.0002
+BETA1: 0.0
+BETA2: 0.9

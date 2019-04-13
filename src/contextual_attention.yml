@@ -1,0 +1,46 @@
+# parameters
+MODEL_RESTORE: 'results_ca'  # Model save directory
+EVAL_FOLDER: 'results_ca'  # Directory to save validation image
+
+GAN: 'wgan_gp'  # only wgan_gp is supported as official implementation
+PRETRAIN_COARSE_NETWORK: False
+GAN_LOSS_ALPHA: 0.0005
+WGAN_GP_LAMBDA: 10
+COARSE_L1_ALPHA: 1.2
+L1_LOSS_ALPHA: 1.2
+AE_LOSS_ALPHA: 1.2
+GAN_WITH_MASK: False
+DISCOUNTED_MASK: True
+PADDING: 'SAME'
+
+# training
+GPU_ID: 1  # GPU id
+MAX_ITERS: 100000
+SNAPSHOT_INTERVAL: 1000
+VAL_PSTEPS: 100
+
+# data
+IMAGE_FLIST: [
+  'image_list.txt', # for training
+  'image_list.txt', # for validation
+]
+
+IMG_SHAPES: [256, 256, 3]
+HEIGHT: 128
+WIDTH: 128
+MAX_DELTA_HEIGHT: 32
+MAX_DELTA_WIDTH: 32
+BATCH_SIZE: 16
+VERTICAL_MARGIN: 0
+HORIZONTAL_MARGIN: 0
+
+# loss
+GLOBAL_WGAN_LOSS_ALPHA: 1.
+
+# loss legacy
+SPATIAL_DISCOUNTING_GAMMA: 0.9
+
+# Adam parms
+ALPHA: 0.0001
+BETA1: 0.5
+BETA2: 0.9

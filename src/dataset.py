@@ -1,4 +1,5 @@
 import chainer
+from chainer import functions as F
 import numpy as np
 import random
 from inpaint_ops import bbox2mask, free_form_mask, random_bbox
@@ -21,16 +22,20 @@ def _create_mask(config, edge=None):
 
 def _postprocess_image(image, edge, config):
     # random crop
-    if image.ndim == 2:
-        # image is greyscale
-        image = image[..., None]
+    image = np.broadcast_to(image, (3, image.shape[1], image.shape[2]))
     height, width = config.IMG_SHAPES[:2]
     h, w = image.shape[1:3]
-    offset = (random.randint(0, h - height), random.randint(0, w - width))
-    image = image[:, offset[0]:offset[0] + height, offset[1]:offset[1] + width]
-    if edge is not None:
-        edge = edge[:, offset[0]:offset[0] + height, offset[1]:offset[1] + width]
-        return image, edge
+    if h < height and w < width:
+        image = F.resize_images(image[None], (height, width)).array[0]
+        if edge is not None:
+            edge = F.resize_images(edge[None], (height, width)).array[0]
+            return image, edge
+    else:
+        offset = (random.randint(0, h - height), random.randint(0, w - width))
+        image = image[:, offset[0]:offset[0] + height, offset[1]:offset[1] + width]
+        if edge is not None:
+            edge = edge[:, offset[0]:offset[0] + height, offset[1]:offset[1] + width]
+            return image, edge
     return image, None
 
 

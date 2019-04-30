@@ -49,7 +49,7 @@ Only single GPU training is supported.
   - Run 
   ```
   cd src
-  python train_contextual_attention.py --snapshot path_to_snapshot
+  python train_contextual_attention.py --snapshot path_to_snapshot.npz
   ```
 
 - DeepFillv2
@@ -58,7 +58,7 @@ Only single GPU training is supported.
   
   ```
   cd src
-  python train_gated_convolution.py --snapshot path_to_snapshot
+  python train_gated_convolution.py --snapshot path_to_snapshot.npz
   ```
 
 ## Validation

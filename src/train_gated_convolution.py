@@ -1,3 +1,4 @@
+import argparse
 import os
 import chainer
 from chainer import training, optimizers
@@ -10,6 +11,11 @@ from dataset import Dataset
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--snapshot', type=str, default='',
+                        help='path to the snapshot')
+    args = parser.parse_args()
+
     config = Config('gated_convolution.yml')
 
     # training data
@@ -60,6 +66,12 @@ def main():
         trigger=(config.VAL_PSTEPS, 'iteration')
     )
 
+    if args.snapshot:
+        if os.path.exists(args.snapshot):
+            print("Resume with snapshot:{}".format(args.snapshot))
+            chainer.serializers.load_npz(args.snapshot, inpaint_model)
+        else:
+            print("{}: invalid snapshot path".format(args.snapshot))
     # Run the training
     trainer.run()
 

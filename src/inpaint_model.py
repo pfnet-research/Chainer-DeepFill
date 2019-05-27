@@ -53,7 +53,7 @@ class InpaintNet(chainer.Chain):
             self.pmconv2_downsample = GenConv(cnum, cnum, 3, 2, gated=gated)
             self.pmconv3 = GenConv(cnum, 2 * cnum, 3, 1, gated=gated)
             self.pmconv4_downsample = GenConv(2 * cnum, 4 * cnum, 3, 2, gated=gated)
-            self.pmconv5 = GenConv(2 * cnum, 4 * cnum, 3, 1, gated=gated)
+            self.pmconv5 = GenConv(4 * cnum, 4 * cnum, 3, 1, gated=gated)
             self.pmconv6 = GenConv(4 * cnum, 4 * cnum, 3, 1, activation="relu", gated=gated)
             self.pmconv9 = GenConv(4 * cnum, 4 * cnum, 3, 1, gated=gated)
             self.pmconv10 = GenConv(4 * cnum, 4 * cnum, 3, 1, gated=gated)
@@ -114,6 +114,8 @@ class InpaintNet(chainer.Chain):
         x = self.pmconv2_downsample(x)
         x = self.pmconv3(x)
         x = self.pmconv4_downsample(x)
+        x = self.pmconv5(x)
+        x = self.pmconv6(x)
 
         x, offset_flow = contextual_attention(x, x, mask_s, 3, 1, rate=2, return_flow=return_offset)
         x = self.pmconv9(x)
